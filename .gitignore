@@ -30,4 +30,5 @@ Temporary Items
 
 # IDE
 .vscode/
+.obsidian/
 *.xcuserstate
