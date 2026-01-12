@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI活用についての提案</title>
+    <style>
+        /* === Base & Typography === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background: #f8fafc; /* Keep very light background for contrast */
+            color: #1e293b; /* Darker main text color */
+            overflow: hidden;
+        }
+        
+        h1, h2, .example-title, .role-title, .priority-title {
+            font-weight: 600;
+            color: #0f172a; /* Even darker headings for emphasis */
+        }
+
+        /* === Main Slide Layout === */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            height: 75vh;
+            padding: 40px 60px;
+            background: #ffffff;
+            border-radius: 12px; /* Slightly more rounded */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Softer shadow */
+            flex-direction: column;
+            border: 1px solid #cbd5e0; /* Slightly darker border */
+        }
+
+        .slide.active {
+            display: flex;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* === Headers & Titles === */
+        h1 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #cbd5e0; /* Slightly darker border */
+        }
+
+        .slide-header {
+            display: flex;
+            align-items: center; /* Center align vertically */
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #cbd5e0; /* Slightly darker border */
+        }
+
+        .slide-header h1 {
+            margin: 0;
+            padding: 0;
+            border-bottom: 0;
+            font-size: 1.6em; /* Adjust size in header */
+        }
+
+        .column h2 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .big-text {
+            font-size: 1.3em;
+            line-height: 1.5;
+            max-width: 800px;
+        }
+
+        .highlight-text {
+            color: #2563eb; /* Darker primary blue for highlights */
+            font-weight: 600;
+        }
+
+        /* === Stepper Navigation Styles === */
+        .stepper-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .stepper-nav .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stepper-nav .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stepper-nav .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .stepper-nav .step-connector {
+            flex-shrink: 0;
+            width: 30px;
+            height: 2px;
+            background-color: #cbd5e0; /* Darker connector */
+            margin: 0 12px;
+            transition: all 0.3s ease;
+        }
+
+        /* Default State */
+        .stepper-nav .step:not(.active):not(.completed) .step-circle {
+            background-color: #e2e8f0; /* Darker default circle background */
+            border: 1px solid #a0aec0; /* Darker default border */
+            color: #64748b; /* Darker default text */
+        }
+        .stepper-nav .step:not(.active):not(.completed) .step-label {
+            color: #64748b; /* Darker default text */
+        }
+
+        /* Active State */
+        .stepper-nav .step.active .step-circle {
+            background-color: #2563eb; /* Darker primary blue */
+            border: 1px solid #2563eb;
+            color: #ffffff;
+        }
+        .stepper-nav .step.active .step-label {
+            color: #0f172a; /* Darker active text */
+            font-weight: 600;
+        }
+
+        /* Completed State */
+        .stepper-nav .step.completed .step-circle {
+            background-color: #ffffff;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+            font-size: 14px; /* For checkmark */
+        }
+        .stepper-nav .step.completed .step-label {
+            color: #334155; /* Darker completed text */
+        }
+        .stepper-nav .step.completed + .step-connector {
+            background-color: #2563eb; /* Darker primary blue */
+        }
+
+        /* === General Components === */
+        .two-column {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #334155; /* Darker list item text */
+        }
+
+        ul li::before {
+            content: '•';
+            position: absolute;
+            left: 5px;
+            color: #2563eb; /* Darker primary blue */
+            font-size: 1.2em;
+        }
+
+        /* === Comparison Boxes (Good/Bad Examples) === */
+        .comparison-box {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .bad-example, .good-example {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px; /* Consistent rounding */
+        }
+
+        .bad-example {
+            background: #fef2f2;
+            border: 1px solid #ef4444; /* Darker red */
+        }
+
+        .good-example {
+            background: #f0fdf4;
+            border: 1px solid #22c55e; /* Darker green */
+        }
+
+        .example-title {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bad-example .example-title {
+            color: #b91c1c;
+        }
+
+        .good-example .example-title {
+            color: #166534;
+        }
+        
+        /* === Flow Diagrams & Grids === */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-item {
+            background: #e2e8f0; /* Darker default flow item background */
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #a0aec0; /* Darker border */
+            color: #334155; /* Darker flow item text */
+        }
+
+        .flow-item.highlight {
+            background: #2563eb; /* Darker primary blue */
+            color: #fff;
+            font-weight: 600;
+            border-color: #2563eb;
+        }
+
+        .arrow {
+            font-size: 1.8em;
+            color: #94a3b8; /* Darker arrow */
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tool-item {
+            background: #e2e8f0; /* Darker tool item background */
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid; /* Thinner accent border */
+        }
+
+        .tool-item.recommended {
+            border-color: #16a34a; /* Darker green */
+        }
+
+        .tool-item.optional {
+            border-color: #ea580c; /* Darker orange */
+        }
+
+        .status-icon {
+            font-size: 1.2em;
+        }
+
+        /* === Role & Priority Components === */
+         .human-ai-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 10px 0;
+        }
+
+        .role-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 180px;
+            border: 1px solid #cbd5e0; /* Darker border */
+        }
+
+        .role-box.human {
+            background: #dbeafe; /* Darker light blue */
+            border-color: #93c5fd;
+            color: #1e3a8a;
+        }
+
+        .role-box.ai {
+            background: #ccfbf1; /* Darker light teal */
+            border-color: #5eead4;
+            color: #0f766e;
+        }
+        
+        .role-icon { font-size: 3em; margin-bottom: 15px; }
+        .role-title { font-size: 1.3em; margin-bottom: 10px; }
+        .role-tasks { font-size: 0.95em; line-height: 1.6; }
+        .plus-sign { font-size: 3em; color: #a0aec0; } /* Darker plus sign */
+
+        .multiplier {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .multiplier-box {
+            background: #15803d; /* Darker green */
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .priority-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .priority-item {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* More spacing */
+            padding: 20px;
+            background: #e2e8f0; /* Darker priority item background */
+            border-radius: 8px;
+            border: 1px solid #a0aec0; /* Darker border */
+        }
+
+        .priority-number {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: #2563eb; /* Darker primary blue */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        .priority-content { flex: 1; }
+        .priority-desc { font-size: 0.9em; color: #334155; } /* Darker description text */
+
+        /* === Main Navigation === */
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255,255,255,0.7); /* Slightly more opaque background */
+            padding: 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px); /* Slightly less blur */
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid #cbd5e0; /* Darker border */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .nav button {
+            background: #2563eb; /* Darker primary blue */
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav button:hover {
+            background: #1d4ed8; /* Even darker shade of new blue */
+        }
+
+        .nav button:disabled {
+            background: #a0aec0; /* Darker disabled background */
+            color: #64748b; /* Darker disabled text */
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            color: #334155; /* Darker page indicator text */
+            font-size: 0.9em;
+            font-weight: 500;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: 背景と方向性 -->
+        <div class="slide active">
+            <h1>AI活用の方向性</h1>
+            <div class="content">
+                <div class="flow-diagram" style="margin-bottom: 15px;">
+                    <div class="flow-item">目標設定</div>
+                    <span class="arrow">→</span>
+                    <div class="flow-item">必要なものを特定</div>
+                    <span class="arrow">→</span>
+                    <div class="flow-item">段階的導入</div>
+                </div>
+                <div class="comparison-box">
+                    <div class="bad-example">
+                        <div class="example-title">❌ 避けたいパターン</div>
+                        <ul>
+                            <li>良さそうなツールだから導入</li>
+                            <li>結局あまり活用されない</li>
+                            <li>運用の手間が増加</li>
+                            <li>効率が下がる</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #c53030; font-weight: 600;">→ 導入が目的化し本末転倒</p>
+                    </div>
+                    <div class="good-example">
+                        <div class="example-title">✓ 目指すべきアプローチ</div>
+                        <ul>
+                            <li>目標を明確化</li>
+                            <li>目標達成に必要なものを特定</li>
+                            <li>優先順位を決めて段階的に導入</li>
+                            <li>効果を測定・改善</li>
+                        </ul>
+                        <p style="margin-top: 10px; color: #276749; font-weight: 600;">→ 手段として正しく活用</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 目標 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1>目標</h1>
+                <div class="stepper-nav">
+                    <div class="step active">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">目標設定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">必要なものを特定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">段階的導入</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content center-content">
+                <p class="big-text">
+                    <span class="highlight-text">人間は人間にしかできないことに集中</span><br>
+                    それ以外は<span class="highlight-text">AIに任せる</span>
+                </p>
+                <div class="human-ai-diagram" style="margin-top: 20px;">
+                    <div class="role-box human">
+                        <div class="role-icon">👤</div>
+                        <div class="role-title">人間</div>
+                        <div class="role-tasks">
+                            意思決定<br>
+                            方針策定<br>
+                            レビュー・承認
+                        </div>
+                    </div>
+                    <div class="plus-sign">+</div>
+                    <div class="role-box ai">
+                        <div class="role-icon">🧠</div>
+                        <div class="role-title">AI</div>
+                        <div class="role-tasks">
+                            コーディング<br>
+                            ドキュメント作成<br>
+                            テスト生成
+                        </div>
+                    </div>
+                </div>
+                <div class="multiplier">
+                    <div class="multiplier-box">少なくとも3倍以上の効率化が見込める</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 開発作業で必要なもの -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1>何が必要か - 開発作業</h1>
+                <div class="stepper-nav">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">目標設定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">必要なものを特定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">段階的導入</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div class="column">
+                        <h2>🔧 ツール</h2>
+                        <div class="tool-grid">
+                            <div class="tool-item recommended">
+                                <span class="status-icon">⭕️</span>
+                                <div>
+                                    <div style="font-weight: 600; color: #0f172a;">AIコードエディタ</div>
+                                    <div style="font-size: 0.85em; color: #475569;">AIがコードエディタに内蔵</div>
+                                </div>
+                            </div>
+                            <div class="tool-item recommended">
+                                <span class="status-icon">⭕️</span>
+                                <div>
+                                    <div style="font-weight: 600; color: #0f172a;">AIコーディングCLI</div>
+                                    <div style="font-size: 0.85em; color: #475569;">AIにCLIを通じてコード修正を行わせる</div>
+                                </div>
+                            </div>
+                            <div class="tool-item recommended">
+                                <span class="status-icon">⭕️</span>
+                                <div>
+                                    <div style="font-weight: 600; color: #0f172a;">レビューツール</div>
+                                    <div style="font-size: 0.85em; color: #475569;">pushされたPRに対してレビューを行う</div>
+                                </div>
+                            </div>
+                            <div class="tool-item recommended">
+                                <span class="status-icon">⭕️</span>
+                                <div>
+                                    <div style="font-weight: 600; color: #0f172a;">GitHub</div>
+                                    <div style="font-size: 0.85em; color: #475569;">AI連携に優れたリポジトリ管理ツール</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h2>🔄 業務フローの見直し</h2>
+                        <div style="background: #f7fafc; padding: 25px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                            <p style="font-weight: 600; color: #2c5282; margin-bottom: 15px;">時間がかかる作業の例</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">仕様把握</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">修正経緯の把握</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">エクセル・Astarの手書き運用</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">不統一・複雑化した既存コードの修正</div>
+                            </div>
+                            <div class="bad-example" style="margin-top: 16px;">
+                                <div class="example-title">❌エクセルはAIで扱いにくい</div>
+                                <ul style="margin: 0;">
+                                    <li>方眼紙状で構造化されていないフォーマット</li>
+                                    <li>複雑な装飾・セル結合</li>
+                                    <li>ヘッダ・フッタ、マクロなど、本質以外の情報</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 開発以外の作業で必要なもの -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1>何が必要か - 開発以外の作業</h1>
+                <div class="stepper-nav">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">目標設定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">必要なものを特定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">段階的導入</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="two-column">
+                    <div class="column">
+                        <h2>🔧 ツール</h2>
+                        <div class="tool-item recommended" style="padding: 25px;">
+                            <span class="status-icon" style="font-size: 1.5em;">⭕️</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 1.2em; color: #2d3748;">ワークフロー</div>
+                                <div style="font-size: 0.9em; color: #718096; margin-top: 8px;">
+                                    AIの実行タイミング・処理を定義<br>
+                                    Slack / Teams連携で自動化
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h2>🔄 業務フローの見直し</h2>
+                        <div style="background: #f7fafc; padding: 25px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                            <p style="font-weight: 600; color: #2c5282; margin-bottom: 15px;">時間がかかる作業の例</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">アカウント探し</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">スタブデータ探し</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">リリース対象抽出</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">検査報告書作成</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">Git線の手書き運用</div>
+                                <div style="padding: 10px; background: #dbeafe; border-radius: 4px; color: #334155;">タスク管理ツールの使い分け</div>
+                            </div>
+                            <p style="margin-top: 20px; text-align: center; color: #276749; font-weight: 600;">
+                                ↓ 自動化・効率化の余地あり
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 何から始めるか -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1>何から始めるか</h1>
+                <div class="stepper-nav">
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">目標設定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">必要なものを特定</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step active">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">段階的導入</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="priority-list">
+                    <div class="priority-item">
+                        <div class="priority-number">1</div>
+                        <div class="priority-content">
+                            <div class="priority-title">AIコードエディタの導入</div>
+                            <div class="priority-desc">即効性が高く、誰でも使いこなせる。日常のコーディング作業を効率化</div>
+                        </div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-number">2</div>
+                        <div class="priority-content">
+                            <div class="priority-title">業務フローの段階的見直し</div>
+                            <div class="priority-desc">AI活用の妨げになる部分を特定し、改善を進める</div>
+                        </div>
+                    </div>
+                    <div class="priority-item">
+                        <div class="priority-number">3</div>
+                        <div class="priority-content">
+                            <div class="priority-title">結果に応じたツール導入</div>
+                            <div class="priority-desc">ワークフロー導入、GitHubへの移行検討など、見直し結果に応じて検討</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; text-align: center; padding: 15px 25px; background: #ebf8ff; border-radius: 6px; border: 1px solid #90cdf4;">
+                    <p style="font-size: 1.2em; color: #2d3748;">
+                        <span class="highlight-text">即効性の高いものから始め</span>、<br>
+                        成功体験をベースに<span class="highlight-text">段階的に広げていく</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button id="prevBtn" onclick="changeSlide(-1)">← 前へ</button>
+        <span class="page-indicator"><span id="currentPage">1</span> / <span id="totalPages">5</span></span>
+        <button id="nextBtn" onclick="changeSlide(1)">次へ →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalPages').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.getElementById('currentPage').textContent = index + 1;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            showSlide(currentSlide);
+        }
+
+        // キーボード操作
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // 初期表示
+        showSlide(0);
+    </script>
+</body>
+</html>
