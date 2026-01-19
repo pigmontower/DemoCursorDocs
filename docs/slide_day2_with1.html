@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIコーディングツールの概要（Day2）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            overflow: hidden;
+        }
+
+        h1,
+        h2 {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            height: 75vh;
+            padding: 40px 60px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex-direction: column;
+            border: 1px solid #cbd5e0;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #cbd5e0;
+        }
+
+        h2 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .big-text {
+            font-size: 1.3em;
+            line-height: 1.5;
+            max-width: 900px;
+        }
+
+        .highlight-text {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #334155;
+        }
+
+        ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #2563eb;
+            font-size: 1.2em;
+            line-height: 1.2;
+        }
+
+        .table-wrap {
+            margin-top: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #cbd5e0;
+            background: #ffffff;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92em;
+        }
+
+        th,
+        td {
+            padding: 10px 12px;
+            text-align: left;
+            border-right: 1px solid #cbd5e0;
+            border-bottom: 1px solid #cbd5e0;
+            vertical-align: top;
+        }
+
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        td {
+            background: #ffffff;
+            color: #334155;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .tool-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .tool-logo {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category-box {
+            background: #e2e8f0;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #a0aec0;
+        }
+
+        .category-box h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #0f172a;
+        }
+
+        .category-box p {
+            font-size: 0.9em;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .tool-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e0;
+        }
+
+        .tool-card h3 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #2563eb;
+        }
+
+        .tool-card .provider {
+            font-size: 0.85em;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .tool-card .feature {
+            font-size: 0.85em;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .price-highlight {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #93c5fd;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .price-highlight h3 {
+            font-size: 1.2em;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .price-highlight p {
+            font-size: 0.95em;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid #cbd5e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav button {
+            background: #2563eb;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav button:hover {
+            background: #1d4ed8;
+        }
+
+        .nav button:disabled {
+            background: #a0aec0;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            color: #334155;
+            font-size: 0.9em;
+            font-weight: 500;
+            padding: 0 10px;
+        }
+
+        .small-text {
+            font-size: 0.85em;
+        }
+
+        .conclusion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .conclusion-card {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 30px 45px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s ease;
+            text-align: left;
+        }
+
+        .conclusion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .conclusion-card .title {
+            font-weight: 700;
+            color: #1d4ed8;
+            font-size: 1.25em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .conclusion-card .title::before {
+            content: '▶';
+            color: #2563eb;
+            font-size: 0.95em;
+            line-height: 1;
+        }
+
+        .conclusion-card .text {
+            font-size: 1.05em;
+            color: #1e3a8a;
+            line-height: 1.6;
+        }
+
+        .conclusion-card .card-list {
+            list-style: disc;
+            padding-left: 1.25em;
+        }
+
+        .conclusion-card .card-list li {
+            padding-left: 0;
+        }
+
+        .conclusion-card .card-list li::before {
+            content: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="slide active">
+            <h1>AIコーディングツールの概要</h1>
+            <div class="content center-content">
+                <div class="conclusion-container">
+                    <div class="conclusion-card">
+                        <div class="title">できること</div>
+                        <div class="text">
+                            <ul class="card-list">
+                                <li style="margin-bottom: 12px;">
+                                    <strong>指示内容をもとに、コード変更を迅速に反映</strong><br>
+                                    <span class="small-text">（新機能の実装、問題点の解決、リファクタリングなど）</span>
+                                </li>
+                                <li>
+                                    <strong>リポジトリ全体の文脈を踏まえた分析・QA</strong><br>
+                                    <span class="small-text">（原因特定、類似実装の比較、修正方針の妥当性確認 など）</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="conclusion-card">
+                        <div class="title">導入メリット</div>
+                        <div class="text">
+                            <ul class="card-list">
+                                <li style="margin-bottom: 8px;">開発生産性は<span class="highlight-text">大幅に向上</span></li>
+                                <li>ツール特有の<span class="highlight-text">高度な支援</span>も享受できる</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>AIコーディングツールの分類</h1>
+            <div class="content">
+                <div class="category-grid">
+                    <div class="category-box">
+                        <h3>AIコーディングエディタ</h3>
+                        <p style="margin-bottom: 12px;">VSCodeベースのエディタ内にAIが内蔵（専用IDE）</p>
+                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Cursor logo" src="https://cursor.com/favicon.ico">
+                                <span>Cursor</span>
+                            </div>
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Windsurf logo" src="https://windsurf.ai/favicon.ico">
+                                <span>Windsurf</span>
+                            </div>
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Kiro logo"
+                                    src="https://www.creationline.com/tech-blog/cms_x3GWkuX/wp-content/uploads/2025/12/kiro-icon3.png">
+                                <span>Kiro</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-box">
+                        <h3>AIコーディング拡張機能</h3>
+                        <p style="margin-bottom: 12px;">VSCodeのAIツールプラグイン</p>
+                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="GitHub logo" src="https://github.com/favicon.ico">
+                                <span>GitHub Copilot</span>
+                            </div>
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Cline logo"
+                                    src="https://cline.bot/assets/branding/favicons/favicon-256x256.png">
+                                <span>Cline</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-box">
+                        <h3>AIコーディングCLI</h3>
+                        <p style="margin-bottom: 12px;">CUIでコードを修正（ターミナル）</p>
+                        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Claude logo" src="https://claude.ai/favicon.ico">
+                                <span>Claude Code</span>
+                            </div>
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Codex logo" src="https://openai.com/favicon.ico">
+                                <span>Codex CLI</span>
+                            </div>
+                            <div class="tool-cell">
+                                <img class="tool-logo" alt="Gemini logo"
+                                    src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg">
+                                <span>Gemini CLI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 40px; background: #ebf8ff; padding: 20px; border-radius: 8px; border: 1px solid #90cdf4;">
+                    <h3 style="margin-bottom: 15px; color: #1e3a8a;">主な使い分けのポイント</h3>
+                    <p style="margin-bottom: 15px; font-weight: 500; color: #1e3a8a;">※ 実現したい目的は、いずれのツールを導入しても概ね達成可能</p>
+                    <ul>
+                        <li><strong>直感・編集重視なら GUI</strong>: 画面を見ながら提案を受け入れ/拒否</li>
+                        <li><strong>自動化・一括処理なら CLI</strong>: スクリプト化による自動実行が可能。IDEを選ばず導入できる</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>各ツールの特徴と違い</h1>
+            <div class="content">
+                <h2 style="font-size: 1.1em; margin-bottom: 5px;">AIコードエディタ</h2>
+                <div class="table-wrap">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">ツール</th>
+                                    <th>主な特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Cursor logo"
+                                                src="https://cursor.com/favicon.ico">
+                                            <strong>Cursor</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(Anysphere)</span>
+                                        </div>
+                                    </td>
+                                    <td>AI開発の標準。CLI機能も提供。最も高機能（後述）</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Windsurf logo"
+                                                src="https://windsurf.ai/favicon.ico">
+                                            <strong>Windsurf</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(Codeium)</span>
+                                        </div>
+                                    </td>
+                                    <td>リポジトリの文脈に応じた最適な対応を提案</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Kiro logo"
+                                                src="https://www.creationline.com/tech-blog/cms_x3GWkuX/wp-content/uploads/2025/12/kiro-icon3.png">
+                                            <strong>Kiro</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(AWS)</span>
+                                        </div>
+                                    </td>
+                                    <td>要件定義〜テストのタスクを自動化。仕様書駆動。CLI機能も提供。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 1.1em; margin-top: 15px; margin-bottom: 5px;">AIコーディング拡張機能</h2>
+                <div class="table-wrap">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">ツール</th>
+                                    <th>主な特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="GitHub logo"
+                                                src="https://github.com/favicon.ico">
+                                            <strong>GitHub Copilot</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(GitHub)</span>
+                                        </div>
+                                    </td>
+                                    <td>指定したファイル単位での修正依頼、質問のみ</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Cline logo"
+                                                src="https://cline.bot/assets/branding/favicons/favicon-256x256.png">
+                                            <strong>Cline</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(Cline)</span>
+                                        </div>
+                                    </td>
+                                    <td>AIモデルは別途契約。APIキーの設定が必要</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 1.1em; margin-top: 15px; margin-bottom: 5px;">AIコーディングCLI</h2>
+                <div class="table-wrap">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">ツール</th>
+                                    <th>主な特徴</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Claude logo"
+                                                src="https://claude.ai/favicon.ico">
+                                            <strong>Claude Code</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(Anthropic)</span>
+                                        </div>
+                                    </td>
+                                    <td>カスタムコマンド/サブエージェント定義など高度なカスタマイズ</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="OpenAI logo"
+                                                src="https://openai.com/favicon.ico">
+                                            <strong>Codex CLI</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(OpenAI)</span>
+                                        </div>
+                                    </td>
+                                    <td>Chat GPTの有料プランに付帯して利用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="tool-cell">
+                                            <img class="tool-logo" alt="Gemini logo"
+                                                src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg">
+                                            <strong>Gemini CLI</strong> <span
+                                                style="color:#64748b; font-size: 0.85em;">(Google)</span>
+                                        </div>
+                                    </td>
+                                    <td>長文読解（100万トークン〜）に強み。無料枠も大きい</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>導入にあたっての選択肢</h1>
+            <div class="content">
+                <div style="background: #f8fafc; padding: 30px; border-radius: 8px; border: 1px solid #cbd5e0;">
+                    <h2 style="margin-bottom: 20px;">選択肢の候補</h2>
+                    <ol style="list-style-position: inside; padding-left: 0;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                            <strong>スピーディーな導入を求めるなら</strong><br>
+                            <span class="small-text">-> ChatGPT Plusのアカウント発行+ソース解析許可（利用量は問題にならない可能性が高い）</span>
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                            <strong>スピーディかつ安全な導入を求めるなら</strong><br>
+                            <span class="small-text">-> ChatGPT Teamのアカウント発行+ソース解析許可（利用量はまず問題にならないはず）</span>
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;"><strong>高機能を求めるなら</strong><br>
+                            <span class="small-text">-> CursorのProプラン（利用量は底をつく可能性が高い）</span>
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                            <strong>高機能かつ安全性を求めるなら</strong><br>
+                            <span class="small-text">-> CursorのTeamsプラン（利用量は1と同等）</span>
+                        </li>
+                        <li style="padding: 10px 0;"><strong>開発体験を重視するなら</strong><br>
+                            <span class="small-text">-> 1or2 + 3or4 のハイブリット</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button id="prevBtn" onclick="changeSlide(-1)">← 前へ</button>
+        <span class="page-indicator"><span id="currentPage">1</span> / <span id="totalPages">6</span></span>
+        <button id="nextBtn" onclick="changeSlide(1)">次へ →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalPages').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.getElementById('currentPage').textContent = index + 1;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>

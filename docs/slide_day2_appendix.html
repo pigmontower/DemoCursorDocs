@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appendix (Features & Price)</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #cbd5e0;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            margin-bottom: 16px;
+            border-left: 5px solid #3b82f6;
+            padding-left: 12px;
+        }
+
+        h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        /* Layout */
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            /* Will be overridden by inline style when hidden */
+            justify-content: center;
+            padding: 44px 22px;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        /* Width overrides per view */
+        #view-features .container {
+            max-width: 900px;
+        }
+
+        #view-price .container {
+            max-width: 1200px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+        }
+
+        .section {
+            margin-top: 24px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        /* Components */
+        .feature-item {
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .tag.new {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .tag.alert {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.8em;
+            font-weight: 700;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .badge.yes {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #86efac;
+        }
+
+        .badge.no {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border-color: #fecaca;
+        }
+
+        .badge.contract {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border-color: #93c5fd;
+        }
+
+        .badge.na {
+            background: #e2e8f0;
+            color: #334155;
+            border-color: #cbd5e0;
+        }
+
+        .badge.outline {
+            background: #f1f5f9;
+            color: #475569;
+            border-color: #cbd5e0;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: #334155;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* Tables */
+        .table-wrap {
+            margin-top: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #cbd5e0;
+            background: #ffffff;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        /* Price table specific min-width */
+        #view-price table {
+            min-width: 980px;
+        }
+
+        th,
+        td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #cbd5e0;
+        }
+
+        /* Vertical borders for price table */
+        #view-price th,
+        #view-price td {
+            border-right: 1px solid #cbd5e0;
+        }
+
+        #view-price th:last-child,
+        #view-price td:last-child {
+            border-right: none;
+        }
+
+        th {
+            background: #e2e8f0;
+            font-weight: 700;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* Price specific helpers */
+        .cell-highlight {
+            background: #fef08a !important;
+            transition: background 180ms ease;
+        }
+
+        .tool-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .tool-logo {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            color: #92400e;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 20px 16px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- View 1: Cursor Features -->
+    <div id="view-features" class="page">
+        <div class="container">
+            <div class="card">
+                <header>
+                    <h1>Cursorの特徴的な機能</h1>
+                </header>
+
+                <div class="section">
+                    <h2>1. マルチエージェント対応と新UI <span class="tag new">New</span></h2>
+                    <div class="feature-item">
+                        <h3>並列実行による生産性向上</h3>
+                        <ul>
+                            <li><strong>複数エージェント</strong>を並行して稼働可能。</li>
+                            <li>タスクごとにエージェントを割り当てることで、複数の作業を同時に進行できる。</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Worktreeによる安全な環境分離</h3>
+                        <ul>
+                            <li>各エージェントは独立した<strong>Git worktree</strong>環境で実行される。</li>
+                            <li>メインの作業ディレクトリとは隔離されているため、並行して作業してもファイル競合が起きない。</li>
+                            <li>自動的にブランチが切られ、作業完了後に取り込むフローがスムーズ。</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>エージェント中心UI</h3>
+                        <ul>
+                            <li>エージェントの実行状態や計画を視覚的に管理できる専用UIを搭載。</li>
+                            <li>「今、AIが何をしているか」が一目でわかる。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>2. コードレビューモード <span class="tag new">New</span></h2>
+                    <p class="feature-item">Cursorが変更内容を自動解析し、バグや改善点を指摘する機能。自分の変更だけでなく、AIエージェントの作業結果をチェックするのにも最適。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>オプション</th>
+                                    <th>対象範囲</th>
+                                    <th>利用シーン</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Review Agent Changes</strong></td>
+                                    <td>エージェントの変更のみ</td>
+                                    <td>AIに任せたタスクの品質チェック</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Review Diff with Main Branch</strong></td>
+                                    <td>Mainとの差分全体</td>
+                                    <td>PR作成前のセルフレビュー（推奨）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>3. Webサーチモード</h2>
+                    <p class="feature-item">最新情報を取得しながらコーディングを進めるための機能。</p>
+                    <div class="feature-item">
+                        <ul>
+                            <li><strong>適宜Web検索</strong>: チャットで「検索して」と頼まなくても、必要に応じて自律的に検索を行う。</li>
+                            <li><strong>@Browser コンテキスト</strong>: 内蔵ブラウザで開いているページのコンテンツを読み取り、デザイン修正やデバッグの参考にできる。</li>
+                            <li><strong>QAが可能</strong>: 「このドキュメントのこの部分をコードに反映して」といった指示がスムーズに通る。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>4. Composerモード <span class="tag new">New</span></h2>
+                    <p class="feature-item">Cursor独自の超高速・高精度モデル「Composer」を使用した開発モード。</p>
+                    <div class="feature-item">
+                        <h3>圧倒的な速度と並列性</h3>
+                        <ul>
+                            <li><strong>4倍高速</strong>: 従来のモデルと比較して圧倒的にレスポンスが速く、待ち時間が少ないのが特徴。</li>
+                            <li><strong>30秒以内</strong>: ほとんどのタスクが30秒以内に完了する。（他モデルでは90-120秒かかる処理も25-30秒で処理）</li>
+                            <li><strong>強化学習による最適化</strong>: 実際のコード変更パターンを学習しており、単なるパターンマッチングを超えた「使える」コードを生成する。</li>
+                        </ul>
+                    </div>
+                    <div class="note">
+                        <strong>⚠️ 注意: 実行コスト</strong><br>
+                        Composerは独自モデルですが高機能なため、クレジット消費量は最新のハイエンドモデルと同等。無制限に使いすぎるとクレジット残量に影響するため注意が必要。
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>5. シチュエーション別モード</h2>
+                    <div class="feature-item">
+                        <h3>Planモード</h3>
+                        <p>複雑な機能実装の際、いきなりコードを書くのではなく<strong>「実装計画」の策定</strong>を代行する。提案されたステップを確認・承認してから実装に移れるため、手戻りを防げる。
+                        </p>
+                    </div>
+                    <div class="feature-item" style="margin-top: 24px;">
+                        <h3>Debugモード</h3>
+                        <p>エラー解決に特化したモード。「ここが動かない」と伝えるだけで、必要な情報を収集・分析し、解決策を提示する。デバッグに必要な前提条件を詳しく説明する手間が省ける。</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>6. セキュリティ機能の強化</h2>
+                    <div class="feature-item">
+                        <p>企業導入で重要となるセキュリティ制御も強化されている。</p>
+                        <div class="table-wrap">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>隔離実行</th>
+                                        <td>外部アクセスやシェルコマンドをサンドボックス環境で実行。</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ブロック機能</th>
+                                        <td>未承認のライブラリインストールや不審なネットワーク通信をブロック。</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ポリシー設定</th>
+                                        <td>Settings → Security から詳細な権限管理が可能。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>7. 他ツールで気になった点</h2>
+                    <div class="feature-item">
+                        <h3>Kiro (AWS)</h3>
+                        <ul>
+                            <li><strong>上流工程との相性</strong>: 今のプロジェクトでは上流工程のプロセスが決まっているため、Kiroの自動実行にメリットを感じない。</li>
+                            <li><strong>ファイル操作</strong>: エクスプローラーからのドラッグ＆ドロップができない。</li>
+                            <li><strong>コピー不可</strong>: チャットウィンドウの内容をコピーできない。</li>
+                            <li><strong>モデル制限</strong>: Anthropic（Claudeシリーズ）のモデルしか選べない。</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Windsurf (Codeium)</h3>
+                        <ul>
+                            <li><strong>Web検索の手間</strong>: ほぼ毎回「Webサーチして」と打つ必要があり、入力が手間。（Kiroはある程度会話から察して検索してくれる）</li>
+                            <li><strong>メリットの不在</strong>: その他特別な不満はないが、逆にメリットも感じにくい。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View 2: Price -->
+    <div id="view-price" class="page" style="display: none;">
+        <div class="container">
+            <div class="card">
+                <h1>料金比較表（AIコードエディタ / AIコーディングCLI）</h1>
+
+                <div class="section">
+                    <h2>AIコードエディタ（Cursor / Windsurf / Kiro）</h2>
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ツール</th>
+                                        <th>プラン</th>
+                                        <th>月額料金（USD）</th>
+                                        <th>月額料金（JPY）</th>
+                                        <th>学習利用</th>
+                                        <th>主な特徴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="6">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Cursor logo"
+                                                    src="https://cursor.com/favicon.ico">
+                                                <strong>Cursor</strong><span style="color:#64748b;">(Anysphere)</span>
+                                            </div>
+                                        </td>
+                                        <td>Hobby（無料）</td>
+                                        <td>$0</td>
+                                        <td>¥0</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>限定的なタブ補完、プレミアムリクエストに上限あり</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="cursor-pro-plan">Pro</td>
+                                        <td>$20/月<br>$16/月（年払い）</td>
+                                        <td>¥3,000/月<br>¥2,400/月（年払い）</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>無制限タブ補完、500 fast requests/月、$20分のクレジット</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pro+</td>
+                                        <td>$60/月</td>
+                                        <td>¥9,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>Proの3倍のクレジット</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ultra</td>
+                                        <td>$200/月</td>
+                                        <td>¥30,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>Proの20倍のクレジット、優先アクセス</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="cursor-teams-plan">Teams</td>
+                                        <td>$40/user/月</td>
+                                        <td>¥6,000/user/月（参考）</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>Proと同等分のクレジット。セキュリティ機能の一括設定、超過分の従量課金設定などが可能な管理者ダッシュボードあり。最少2名から</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enterprise</td>
+                                        <td>要問い合わせ</td>
+                                        <td>要問い合わせ</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>Teamsの全機能 + プール型使用量、請求書/PO払い、SCIM管理、監査ログ、優先サポート</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="4">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Windsurf logo"
+                                                    src="https://windsurf.ai/favicon.ico">
+                                                <strong>Windsurf</strong><span style="color:#64748b;">(Codeium)</span>
+                                            </div>
+                                        </td>
+                                        <td>Free</td>
+                                        <td>$0</td>
+                                        <td>¥0</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>25クレジット/月。基本機能のみ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pro</td>
+                                        <td>$15/月</td>
+                                        <td>¥2,250/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>500クレジット/月。プレミアムモデル利用可</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Teams</td>
+                                        <td>$30/user/月</td>
+                                        <td>¥4,500/user/月</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>500クレジット/user/月。管理ダッシュボード、集中請求、優先サポート。最大200ユーザーまで</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enterprise</td>
+                                        <td>$60/user/月</td>
+                                        <td>¥9,000/user/月</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>1,000クレジット/user/月。SSO/SCIM、RBAC、高度なセキュリティ</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="5">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Kiro logo"
+                                                    src="https://www.creationline.com/tech-blog/cms_x3GWkuX/wp-content/uploads/2025/12/kiro-icon3.png">
+                                                <strong>Kiro</strong><span style="color:#64748b;">(AWS)</span>
+                                            </div>
+                                        </td>
+                                        <td>Free</td>
+                                        <td>$0</td>
+                                        <td>¥0</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>50クレジット/月</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pro</td>
+                                        <td>$20/月</td>
+                                        <td>¥3,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>1,000クレジット/月。超過時$0.04/クレジット</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pro+</td>
+                                        <td>$40/月</td>
+                                        <td>¥6,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>2,000クレジット/月。超過時$0.04/クレジット</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Power</td>
+                                        <td>$200/月</td>
+                                        <td>¥30,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>10,000クレジット/月。超過時$0.04/クレジット</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enterprise</td>
+                                        <td>要問い合わせ</td>
+                                        <td>要問い合わせ</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>チーム管理、SSO、請求管理、セキュリティ制御</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" style="margin-top: 14px;">
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>備考</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Cursorのクレジット</strong></td>
+                                        <td>1リクエスト（AIへの指示）≒
+                                            1クレジット消費。Proは約500リクエスト/月、Pro+は約1,500リクエスト/月、Ultraは約10,000リクエスト/月。Tab補完はクレジット消費なし（無制限）
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Windsurfのクレジット</strong></td>
+                                        <td>1プロンプト（AIへの指示）≒
+                                            1クレジット消費。Tab補完・Preview機能はクレジット消費なし（無制限）。未使用クレジットは翌月繰り越し可能。追加購入は$10で250クレジット
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Kiroのクレジット</strong></td>
+                                        <td>AIへのリクエストごとに消費。リクエストの複雑さに応じて消費量が変動（簡単なものは1クレジット未満、複雑なものは複数クレジット）。未使用クレジットは月末にリセット（翌月持ち越し不可）
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>AIコーディングCLI（Claude Code / Codex / Gemini CLI）</h2>
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ツール</th>
+                                        <th>プラン</th>
+                                        <th>月額料金（USD）</th>
+                                        <th>月額料金（JPY）</th>
+                                        <th>学習利用</th>
+                                        <th>主な特徴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="6">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Claude logo"
+                                                    src="https://claude.ai/favicon.ico">
+                                                <strong>Claude Code</strong><span
+                                                    style="color:#64748b;">(Anthropic)</span>
+                                            </div>
+                                        </td>
+                                        <td>Pro</td>
+                                        <td>$20/月<br>$17/月（年払い）</td>
+                                        <td>¥3,000/月<br>¥2,550/月（年払い）</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>約10〜45メッセージ/5時間</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Max 5x</td>
+                                        <td>$100/月</td>
+                                        <td>¥15,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>Proの5倍の使用量、メモリ機能</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Max 20x</td>
+                                        <td>$200/月</td>
+                                        <td>¥30,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>Proの20倍の使用量、優先アクセス</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Team Premium</td>
+                                        <td>$150/user/月</td>
+                                        <td>¥22,500/user/月</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>約225メッセージ/5時間。最低5ユーザー</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enterprise</td>
+                                        <td>要問い合わせ</td>
+                                        <td>要問い合わせ</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>Team機能拡張、監査ログ、HIPAA対応、より大きいコンテキストウィンドウ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>API従量課金</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="badge no">❌ なし</span></td>
+                                        <td><span class="mono">Opus 4.5: $5.00/M入力、$25.00/M出力</span><br><span
+                                                class="mono">Sonnet 4.5: $3.00/M入力、$15.00/M出力</span><br><span
+                                                class="mono">Haiku 3.5: $0.80/M入力、$4.00/M出力</span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="5">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="OpenAI logo"
+                                                    src="https://openai.com/favicon.ico">
+                                                <strong>Codex CLI</strong><span style="color:#64748b;">(OpenAI)</span>
+                                            </div>
+                                        </td>
+                                        <td id="chatgpt-plus-plan">ChatGPT Plus</td>
+                                        <td>$20/月</td>
+                                        <td>¥3,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>GPT-5.2: ~160メッセージ/3時間、o3-mini: 高い制限（上限あり）</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ChatGPT Pro</td>
+                                        <td>$200/月</td>
+                                        <td>¥30,000/月</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>Plusの数倍の使用量、o1-pro: 無制限利用（状況による）</td>
+                                    </tr>
+                                    <tr>
+                                        <td id="chatgpt-team-plan">ChatGPT Team</td>
+                                        <td>$30/user/月</td>
+                                        <td>¥4,500/user/月</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>GPT-5.2: ~320メッセージ/3時間（Plusの約2倍）。最少2名から</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enterprise/Edu</td>
+                                        <td>要問い合わせ</td>
+                                        <td>要問い合わせ</td>
+                                        <td><span class="badge no">❌ なし（デフォルト）</span></td>
+                                        <td>大規模導入向け、クレジットプール方式、監査ログ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>API従量課金</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="badge no">❌ なし</span></td>
+                                        <td><span class="mono">codex-mini: $1.50/M入力、$6.00/M出力</span><br><span
+                                                class="mono">GPT-5: $1.25/M入力、$10.00/M出力</span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="2">
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Gemini logo"
+                                                    src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg">
+                                                <strong>Gemini CLI</strong><span style="color:#64748b;">(Google)</span>
+                                            </div>
+                                        </td>
+                                        <td>無料プラン</td>
+                                        <td>$0</td>
+                                        <td>¥0</td>
+                                        <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
+                                        <td>60リクエスト/分、1,000リクエスト/日、Gemini 2.5 Pro、1M token context</td>
+                                    </tr>
+                                    <tr>
+                                        <td>API従量課金（有料）</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td><span class="badge no">❌ なし</span></td>
+                                        <td><span class="mono">Flash-Lite: $0.10/M入力、$0.40/M出力</span><br><span
+                                                class="mono">3 Pro: $2.00/M入力、$12.00/M出力</span><br><span class="mono">3
+                                                Flash: $0.15/M入力、$0.60/M出力</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" style="margin-top: 14px;">
+                        <div class="table-scroll">
+                            <table style="min-width: 760px;">
+                                <thead>
+                                    <tr>
+                                        <th>前提</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>JPY換算レート</strong></td>
+                                        <td>1 USD = 150 JPY で計算</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>学習利用について（定義 / オプトアウト手順）</h2>
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table style="min-width: 760px;">
+                                <thead>
+                                    <tr>
+                                        <th>区分</th>
+                                        <th>意味</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge yes">✅ オプトアウト可</span></td>
+                                        <td>設定でデータトレーニングへの利用を無効化できます</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge no">❌ なし</span></td>
+                                        <td>データはモデルのトレーニングに使用されません（プライバシーモード / エンタープライズ保証）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" style="margin-top: 14px;">
+                        <div class="table-scroll">
+                            <table style="min-width: 980px;">
+                                <thead>
+                                    <tr>
+                                        <th>ツール</th>
+                                        <th>オプトアウト方法</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Cursor logo"
+                                                    src="https://cursor.com/favicon.ico">
+                                                <strong>Cursor</strong>
+                                            </div>
+                                        </td>
+                                        <td>Privacy Mode を有効化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Windsurf logo"
+                                                    src="https://windsurf.ai/favicon.ico">
+                                                <strong>Windsurf</strong>
+                                            </div>
+                                        </td>
+                                        <td>Profile で Zero Data Retention を有効化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Kiro logo"
+                                                    src="https://www.creationline.com/tech-blog/cms_x3GWkuX/wp-content/uploads/2025/12/kiro-icon3.png">
+                                                <strong>Kiro</strong>
+                                            </div>
+                                        </td>
+                                        <td>「Share Kiro content with AWS / Content Collection for Service
+                                            Improvement」をオフ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Claude logo"
+                                                    src="https://claude.ai/favicon.ico">
+                                                <strong>Claud Code</strong>
+                                            </div>
+                                        </td>
+                                        <td>Privacy Settings で「Help improve Claude」をオフ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="OpenAI logo"
+                                                    src="https://openai.com/favicon.ico">
+                                                <strong>Codex CLI</strong>
+                                            </div>
+                                        </td>
+                                        <td>「Improve model for everyone」設定をオフ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Gemini logo"
+                                                    src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg">
+                                                <strong>Gemini CLI</strong>
+                                            </div>
+                                        </td>
+                                        <td>「Gemini Apps Activity」設定をオフ（チャット履歴も無効化される）</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>CLI系ツールのリクエスト数ランキング（1日あたり）</h2>
+                    <div class="table-wrap">
+                        <div class="table-scroll">
+                            <table style="min-width: 980px;">
+                                <thead>
+                                    <tr>
+                                        <th>順位</th>
+                                        <th>ツール</th>
+                                        <th>プラン</th>
+                                        <th>リクエスト数/日</th>
+                                        <th>備考</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>🥇 1位</td>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Gemini logo"
+                                                    src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg">
+                                                <strong>Gemini CLI</strong>
+                                            </div>
+                                        </td>
+                                        <td>無料プラン</td>
+                                        <td><strong>1,000</strong></td>
+                                        <td>Flash models、Pro models は50/日</td>
+                                    </tr>
+                                    <tr>
+                                        <td>🥈 2位</td>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="OpenAI logo"
+                                                    src="https://openai.com/favicon.ico">
+                                                <strong>Codex CLI</strong>
+                                            </div>
+                                        </td>
+                                        <td>ChatGPT Plus ($20/月)</td>
+                                        <td><strong>~1,280</strong></td>
+                                        <td>GPT-5.2: ~160メッセージ/3時間を1日換算</td>
+                                    </tr>
+                                    <tr>
+                                        <td>🥉 3位</td>
+                                        <td>
+                                            <div class="tool-cell">
+                                                <img class="tool-logo" alt="Claude logo"
+                                                    src="https://claude.ai/favicon.ico">
+                                                <strong>Claude Code</strong>
+                                            </div>
+                                        </td>
+                                        <td>Pro</td>
+                                        <td><strong>数十程度</strong></td>
+                                        <td>具体的な数値は非公開</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap" style="margin-top: 14px;">
+                        <div class="table-scroll">
+                            <table style="min-width: 980px;">
+                                <thead>
+                                    <tr>
+                                        <th>ポイント</th>
+                                        <th>内容</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>コスパ</strong></td>
+                                        <td><strong>Gemini CLI</strong>が圧倒的にコスパ良好（無料で1日1,000リクエスト）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>比較観点</strong></td>
+                                        <td><strong>OpenAI Codex
+                                                CLI</strong>は有料($20/月)の場合はGemini無料プランより多い（1日~1,280リクエスト）</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>位置づけ</strong></td>
+                                        <td><strong>Claude Code</strong>の無料プランは「お試し」程度の利用に限定</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // State Management
+            const state = {
+                currentView: 'features', // 'features' or 'price'
+                priceStepIndex: 0
+            };
+
+            const views = {
+                features: document.getElementById('view-features'),
+                price: document.getElementById('view-price')
+            };
+
+            // Switch View Logic
+            function switchView(viewName) {
+                if (!views[viewName]) return;
+
+                // Hide all
+                Object.values(views).forEach(el => {
+                    el.style.display = 'none';
+                });
+
+                // Show target
+                views[viewName].style.display = 'flex';
+                state.currentView = viewName;
+
+                // Reset scroll to top
+                window.scrollTo(0, 0);
+            }
+
+            // Price Table Logic (Originally from slide_day2_price.html)
+            function collectCellsFrom(startCell) {
+                const cells = [];
+                let cell = startCell;
+                while (cell) {
+                    if (cell.tagName === 'TD' || cell.tagName === 'TH') {
+                        cells.push(cell);
+                    }
+                    cell = cell.nextElementSibling;
+                }
+                return cells;
+            }
+
+            const priceSteps = [
+                { id: 'cursor-pro-plan' },
+                { id: 'cursor-teams-plan' },
+                { id: 'chatgpt-plus-plan' },
+                { id: 'chatgpt-team-plan' }
+            ].map((step) => {
+                const el = document.getElementById(step.id);
+                const cells = el ? collectCellsFrom(el) : [];
+                return { id: step.id, cells };
+            });
+
+            function applyPriceStep(index) {
+                if (index < 0 || index >= priceSteps.length) return;
+                const step = priceSteps[index];
+                step.cells.forEach((cell) => cell.classList.add('cell-highlight'));
+            }
+
+            function revertPriceStep(index) {
+                if (index < 0 || index >= priceSteps.length) return;
+                const step = priceSteps[index];
+                step.cells.forEach((cell) => cell.classList.remove('cell-highlight'));
+            }
+
+            // Master Event Listener
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    if (state.currentView === 'features') {
+                        // Switch to Price
+                        switchView('price');
+                    } else if (state.currentView === 'price') {
+                        // Advance Price Highlight
+                        if (state.priceStepIndex < priceSteps.length) {
+                            applyPriceStep(state.priceStepIndex);
+                            state.priceStepIndex += 1;
+                        }
+                    }
+                }
+
+                if (e.key === 'ArrowLeft') {
+                    if (state.currentView === 'price') {
+                        e.preventDefault();
+                        if (state.priceStepIndex > 0) {
+                            // Revert Price Highlight
+                            state.priceStepIndex -= 1;
+                            revertPriceStep(state.priceStepIndex);
+                        } else {
+                            // Go back to Features
+                            switchView('features');
+                        }
+                    }
+                    // If features, do nothing (or go back further if we had more slides)
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>
