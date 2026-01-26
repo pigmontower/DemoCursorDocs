@@ -343,19 +343,7 @@
                 </div>
 
                 <div class="section">
-                    <h2>3. Webサーチモード</h2>
-                    <p class="feature-item">最新情報を取得しながらコーディングを進めるための機能。</p>
-                    <div class="feature-item">
-                        <ul>
-                            <li><strong>適宜Web検索</strong>: チャットで「検索して」と頼まなくても、必要に応じて自律的に検索を行う。</li>
-                            <li><strong>@Browser コンテキスト</strong>: 内蔵ブラウザで開いているページのコンテンツを読み取り、デザイン修正やデバッグの参考にできる。</li>
-                            <li><strong>QAが可能</strong>: 「このドキュメントのこの部分をコードに反映して」といった指示がスムーズに通る。</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h2>4. Composerモード <span class="tag new">New</span></h2>
+                    <h2>3. Composerモード <span class="tag new">New</span></h2>
                     <p class="feature-item">Cursor独自の超高速・高精度モデル「Composer」を使用した開発モード。</p>
                     <div class="feature-item">
                         <h3>圧倒的な速度と並列性</h3>
@@ -372,7 +360,7 @@
                 </div>
 
                 <div class="section">
-                    <h2>5. シチュエーション別モード</h2>
+                    <h2>4. シチュエーション別モード</h2>
                     <div class="feature-item">
                         <h3>Planモード</h3>
                         <p>複雑な機能実装の際、いきなりコードを書くのではなく<strong>「実装計画」の策定</strong>を代行する。提案されたステップを確認・承認してから実装に移れるため、手戻りを防げる。
@@ -385,7 +373,7 @@
                 </div>
 
                 <div class="section">
-                    <h2>6. セキュリティ機能の強化</h2>
+                    <h2>5. セキュリティ機能の強化</h2>
                     <div class="feature-item">
                         <p>企業導入で重要となるセキュリティ制御も強化されている。</p>
                         <div class="table-wrap">
@@ -410,6 +398,60 @@
                 </div>
 
                 <div class="section">
+                    <h2>6. 無制限利用可能なモデル <span class="tag new">New</span></h2>
+                    <p class="feature-item">Cursor Proプランでは、500 fast requests制限の対象外となる<strong>非プレミアムモデル</strong>を無制限・高速で利用可能。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>モデル</th>
+                                    <th>性能レベル</th>
+                                    <th>特徴</th>
+                                    <th>企業利用推奨度</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>GPT-4o mini</strong></td>
+                                    <td>🥈 高性能</td>
+                                    <td>GPT-4oの軽量版、バランス良好</td>
+                                    <td><span class="badge yes">✅ 推奨</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gemini 2.0 Flash</strong></td>
+                                    <td>🥉 高速</td>
+                                    <td>Google製、マルチモーダル対応</td>
+                                    <td><span class="badge yes">✅ 推奨</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DeepSeek V3</strong></td>
+                                    <td>🥇 最高性能</td>
+                                    <td>GPT-4レベル、数学・推論特化</td>
+                                    <td><span class="badge alert">⚠️ セキュリティリスク</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>cursor-fast</strong></td>
+                                    <td>軽量・高速</td>
+                                    <td>Cursor最適化、エディタ統合</td>
+                                    <td><span class="badge yes">✅ 補助用途</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>cursor-small</strong></td>
+                                    <td>軽量</td>
+                                    <td>約20億パラメータ、1,000トークン制限</td>
+                                    <td><span class="badge outline">簡単なタスクのみ</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="note">
+                        <strong>💡 企業利用での推奨組み合わせ</strong><br>
+                        メイン: <strong>GPT-4o mini</strong>（高品質・安全）+ 補助: <strong>cursor-fast</strong>（軽量タスク）<br>
+                        DeepSeek V3は最高性能だが中国企業製のためセキュリティリスクあり。
+                    </div>
+                </div>
+
+                <div class="section">
                     <h2>7. 他ツールで気になった点</h2>
                     <div class="feature-item">
                         <h3>Kiro (AWS)</h3>
@@ -423,7 +465,7 @@
                     <div class="feature-item">
                         <h3>Windsurf (Codeium)</h3>
                         <ul>
-                            <li><strong>Web検索の手間</strong>: ほぼ毎回「Webサーチして」と打つ必要があり、入力が手間。（Kiroはある程度会話から察して検索してくれる）</li>
+                            <li><strong>マルチエージェント操作</strong>: 最新版ではマルチエージェント対応されたが、使い勝手はCursorに劣る</li>
                             <li><strong>メリットの不在</strong>: その他特別な不満はないが、逆にメリットも感じにくい。</li>
                         </ul>
                     </div>
@@ -473,7 +515,7 @@
                                         <td>$20/月<br>$16/月（年払い）</td>
                                         <td>¥3,000/月<br>¥2,400/月（年払い）</td>
                                         <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
-                                        <td>無制限タブ補完、500 fast requests/月、$20分のクレジット</td>
+                                        <td>無制限タブ補完、500 fast requests/月、$20分のクレジット<br><strong>※非プレミアムモデル（GPT-4o mini、Gemini 2.0 Flash等）は無制限利用可能</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Pro+</td>
@@ -523,7 +565,7 @@
                                         <td>$15/月</td>
                                         <td>¥2,250/月</td>
                                         <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
-                                        <td>500クレジット/月。プレミアムモデル利用可</td>
+                                        <td>500クレジット/月。プレミアムモデル利用可<br><strong>※クレジット使い切り後も無料モデル（GPT-5.1 Codex系、SWE-1.5 Free等）は無制限利用可能</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Teams</td>
@@ -559,7 +601,7 @@
                                         <td>$20/月</td>
                                         <td>¥3,000/月</td>
                                         <td><span class="badge yes">✅ あり（オプトアウト可）</span></td>
-                                        <td>1,000クレジット/月。超過時$0.04/クレジット</td>
+                                        <td>1,000クレジット/月。超過時$0.04/クレジット<br><strong>※クレジット使い切ると完全停止（翌月まで利用不可）</strong></td>
                                     </tr>
                                     <tr>
                                         <td>Pro+</td>
@@ -600,18 +642,18 @@
                                     <tr>
                                         <td><strong>Cursorのクレジット</strong></td>
                                         <td>1リクエスト（AIへの指示）≒
-                                            1クレジット消費。Proは約500リクエスト/月、Pro+は約1,500リクエスト/月、Ultraは約10,000リクエスト/月。Tab補完はクレジット消費なし（無制限）
+                                            1クレジット消費。Proは約500リクエスト/月、Pro+は約1,500リクエスト/月、Ultraは約10,000リクエスト/月。Tab補完はクレジット消費なし（無制限）。<strong>非プレミアムモデル（GPT-4o mini、Gemini 2.0 Flash、DeepSeek V3等）は制限なしで無制限利用可能</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><strong>Windsurfのクレジット</strong></td>
                                         <td>1プロンプト（AIへの指示）≒
-                                            1クレジット消費。Tab補完・Preview機能はクレジット消費なし（無制限）。未使用クレジットは翌月繰り越し可能。追加購入は$10で250クレジット
+                                            1クレジット消費。Tab補完・Preview機能はクレジット消費なし（無制限）。未使用クレジットは翌月繰り越し可能。追加購入は$10で250クレジット。<strong>クレジット使い切り後も無料モデル（GPT-5.1 Codex系、SWE-1.5 Free等）は無制限利用可能</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><strong>Kiroのクレジット</strong></td>
-                                        <td>AIへのリクエストごとに消費。リクエストの複雑さに応じて消費量が変動（簡単なものは1クレジット未満、複雑なものは複数クレジット）。未使用クレジットは月末にリセット（翌月持ち越し不可）
+                                        <td>AIへのリクエストごとに消費。リクエストの複雑さに応じて消費量が変動（簡単なものは1クレジット未満、複雑なものは複数クレジット）。未使用クレジットは月末にリセット（翌月持ち越し不可）。<strong>Freeプランはクレジット使い切ると完全停止し、翌月まで一切利用不可</strong>
                                         </td>
                                     </tr>
                                 </tbody>
